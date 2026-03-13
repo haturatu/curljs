@@ -19,11 +19,12 @@ install:
 	@case "$(ARCH)" in \
 		aarch64|arm64) \
 			echo "Detected $(ARCH); using a system browser instead of Puppeteer's bundled Chrome."; \
-			{ command -v chromium >/dev/null 2>&1 && command -v chromium; } || \
-			{ command -v chromium-browser >/dev/null 2>&1 && command -v chromium-browser; } || \
-			{ command -v google-chrome >/dev/null 2>&1 && command -v google-chrome; } || \
-			{ command -v google-chrome-stable >/dev/null 2>&1 && command -v google-chrome-stable; } \
-			> "$(LIB_DIR)/browser_path"; \
+			( \
+				{ command -v chromium >/dev/null 2>&1 && command -v chromium; } || \
+				{ command -v chromium-browser >/dev/null 2>&1 && command -v chromium-browser; } || \
+				{ command -v google-chrome >/dev/null 2>&1 && command -v google-chrome; } || \
+				{ command -v google-chrome-stable >/dev/null 2>&1 && command -v google-chrome-stable; } \
+			) > "$(LIB_DIR)/browser_path"; \
 			if [ ! -s "$(LIB_DIR)/browser_path" ]; then \
 				echo "Error: no supported system browser found for $(ARCH)." >&2; \
 				echo "Install chromium or google-chrome, then run make install again." >&2; \
